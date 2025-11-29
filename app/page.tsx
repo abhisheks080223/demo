@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="w-full font-sans text-gray-900">
+    <div className="w-full font-sans text-gray-900 bg-white">
       {/* ================= HERO SECTION ================= */}
       <section className="max-w-7xl mx-auto px-6 py-16 grid md:grid-cols-2 gap-10 items-center">
         <div>
@@ -35,7 +35,7 @@ export default function Home() {
 
         <div className="relative">
           <Image
-            src="/infinity-hero.jpg"
+            src="/logo.jpeg"
             alt="Infinity Engineerings"
             width={500}
             height={500}
@@ -45,39 +45,57 @@ export default function Home() {
       </section>
 
       {/* ================= CLIENT LOGOS ================= */}
-      <section className="py-12 bg-gray-50">
-        <div className="max-w-6xl mx-auto flex justify-center gap-10 flex-wrap opacity-90">
-          {[
-            "/jll.jpg",
-            "/zara.png",
-            "/dlf.png",
-            "/itc.jpg",
-            "/max.avif",
-            "/sptl.jpeg",
-            "/holidayinn.jpg",
-            "/shell.png",
-          ].map((logo, i) => (
-            <div
-              key={i}
-              className="w-28 grayscale hover:grayscale-0 transition"
-            >
-              <Image
-                src={logo}
-                alt="Client Logo"
-                width={100}
-                height={50}
-                className="object-contain"
-              />
-            </div>
-          ))}
+      <div className="relative w-full bg-white text-black font-sans flex flex-col items-center py-10 px-4">
+        {/* Background Logo */}
+        <div className="absolute inset-0 flex items-center justify-center opacity-5 pointer-events-none">
+          <Image
+            src="/logobg.png"
+            alt="Background Logo"
+            width={800}
+            height={800}
+            className="object-contain select-none"
+          />
         </div>
-      </section>
+
+        {/* Heading */}
+        <h1 className="text-3xl sm:text-4xl font-bold relative z-10">
+          OUR <span className="text-red-600">CLIENTS</span>
+        </h1>
+
+        {/* Clients Section */}
+        <section className="py-12 w-full relative z-10">
+          <div className="max-w-6xl mx-auto flex justify-center gap-10 flex-wrap">
+            {[
+              "/jll.jpg",
+              "/zara.png",
+              "/itc.jpg",
+              "/max.avif",
+              "/sptl.jpeg",
+              "/holidayinn.jpg",
+              "/shell.png",
+              "/colonade.jpg",
+              "/boa.jpg",
+              "/samsung.png",
+            ].map((logo, i) => (
+              <div key={i} className="w-28 mx-3 hover:grayscale-0 transition">
+                <Image
+                  src={logo}
+                  alt={`Client Logo ${i + 1}`}
+                  width={100}
+                  height={50}
+                  className="object-contain"
+                />
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
 
       {/* ================= ABOUT / SUCCESS SECTION ================= */}
-      <section className="max-w-7xl mx-auto px-6 py-16 grid md:grid-cols-2 gap-10">
+      <section className="max-w-7xl mx-auto px-6 py-16 grid md:grid-cols-2 gap-10 items-center place-items-center">
         <div className="relative">
           <Image
-            src="/engineers.jpg"
+            src="/collab.png"
             alt="Team Image"
             width={500}
             height={350}
