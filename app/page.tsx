@@ -2,9 +2,65 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="w-full font-sans text-gray-900 bg-white">
+    <div className="w-full font-sans  text-gray-900 bg-white">
+      {/* ================= HEADER ================= */}
+      <header className="w-full flex h-full justify-center py-4 px-4">
+        <div className="w-full mt-5 max-w-7xl bg-[#f4efff] rounded-full px-6 py-3 flex items-center justify-between  shadow-sm">
+          {/* Logo */}
+          <div className="flex items-center gap-2">
+            <Image
+              src="/logo.jpeg"
+              alt="Logo"
+              width={40}
+              height={40}
+              className="object-contain"
+            />
+            <span className="font-semibold text-xl">Infinty Engineering</span>
+          </div>
+
+          {/* Nav Items */}
+          <nav className="hidden md:flex items-center gap-12 text-gray-700 font-medium">
+            <a href="#" className="hover:text-black">
+              Home
+            </a>
+            <a href="#" className="hover:text-black">
+              About Us
+            </a>
+            <a href="#" className="hover:text-black">
+              Service
+            </a>
+
+            {/* Dropdown */}
+            <div className="relative group cursor-pointer">
+              <div className="flex items-center gap-1 hover:text-black">
+                Pages <span>▾</span>
+              </div>
+
+              {/* Dropdown menu */}
+              <div className="hidden group-hover:block absolute top-7 left-0 bg-white rounded-md shadow-md p-3 text-sm w-32">
+                <a href="#" className="block py-1 hover:text-blue-600">
+                  Page 1
+                </a>
+                <a href="#" className="block py-1 hover:text-blue-600">
+                  Page 2
+                </a>
+                <a href="#" className="block py-1 hover:text-blue-600">
+                  Page 3
+                </a>
+              </div>
+            </div>
+          </nav>
+
+          {/* Contact Button */}
+          <button className="bg-black text-white px-5 py-2 rounded-full hidden md:block">
+            Contact Us
+          </button>
+        </div>
+      </header>
+
       {/* ================= HERO SECTION ================= */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16 grid md:grid-cols-2 gap-10 items-center">
+        {/* LEFT SIDE TEXT */}
         <div>
           <h4 className="text-xs sm:text-sm uppercase tracking-widest text-gray-500">
             Welcome To{" "}
@@ -33,121 +89,190 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="relative max-w-xs sm:max-w-sm md:max-w-full mx-auto">
+        {/* RIGHT SIDE WITH BACKGROUND + CARDS */}
+        <div className="relative w-full flex justify-center pr-60">
+          {/* Purple Background Shape */}
+          <div
+            className="absolute top-0 right-0 w-[330px] h-[420px] 
+                  bg-gradient-to-b from-purple-300/50 to-purple-100 
+                  rounded-3xl"
+          ></div>
+
+          {/* Woman Image (Front Layer) */}
           <Image
-            src="/logo.jpeg"
-            alt="Infinity Engineerings"
-            width={500}
+            src="/girl.png"
+            alt="Hero Woman"
+            width={420}
             height={500}
-            className="rounded-xl shadow-lg object-contain w-full h-auto"
+            className="relative z-10 rounded-xl object-cover"
           />
+
+          {/* Floating Cards Container */}
+          <div className="absolute right-[-40px] top-10 z-20 space-y-6 pr-20">
+            {/* Rating Card */}
+            <div className="bg-white w-48 p-4 rounded-2xl shadow-lg ">
+              <h2 className="text-xl font-bold">4,9/5</h2>
+              <p className="text-gray-500 text-sm mt-1">
+                Delivering precision, innovation, and engineering
+                expertise without limits.
+              </p>
+              <div className="text-yellow-500 mt-2">★★★★★</div>
+            </div>
+
+            {/* Avatar Row */}
+            <div className="bg-white flex items-center gap-3 p-2 px-3 rounded-full shadow-md w-max">
+              <div className="flex -space-x-3">
+                <Image
+                  src="/avg.avif"
+                  width={40}
+                  height={32}
+                  className="rounded-full border-2 border-white"
+                  alt="avatar"
+                />
+                <Image
+                  src="/avg2.webp"
+                  width={40}
+                  height={32}
+                  className="rounded-full border-2 border-white"
+                  alt="avatar"
+                />
+                <Image
+                  src="/avg3.webp"
+                  width={40}
+                  height={32}
+                  className="rounded-full border-2 border-white"
+                  alt="avatar"
+                />
+              </div>
+              <div className="w-9 h-7 rounded-full bg-purple-500 text-white flex items-center justify-center text-lg">
+                +
+              </div>
+            </div>
+
+            {/* Text */}
+            <div className="ml-2">
+              <h3 className="text-xl font-semibold leading-tight">
+                Get To Know
+                <br />
+                Our Business
+              </h3>
+              <p className="text-gray-500 text-sm mt-1 flex items-center gap-1">
+                Let's Get Started →
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* ================= CLIENT LOGOS ================= */}
-      <div className="relative w-full bg-white text-black flex flex-col items-center py-12 px-4">
-        {/* Background Logo */}
-        <div className="absolute inset-0 flex items-center justify-center opacity-5 pointer-events-none">
-          <Image
-            src="/logobg.png"
-            alt="Background Logo"
-            width={600}
-            height={600}
-            className="object-contain select-none w-3/4 sm:w-1/2"
-          />
-        </div>
-
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold relative z-10 mb-6">
+      <div className="w-full bg-white min-h-screen mt-10   text-black font-sans flex flex-col items-center py-10 px-4">
+        <h1 className="text-3xl sm:text-4xl font-bold">
           OUR <span className="text-red-600">CLIENTS</span>
         </h1>
+        <div className="relative w-full bg-white text-black flex flex-col items-center py-12 px-4">
+          {/* Background Logo */}
+          <div className="relative w-full py-10">
+            {/* Background Logo */}
+            <div className="absolute inset-0 flex items-center justify-center opacity-50">
+              <Image
+                src="/logobg.png"
+                alt="Background Logo"
+                width={800}
+                height={800}
+                className="object-contain"
+              />
+            </div>
 
-        <section className="py-6 w-full relative z-10">
-          <div className="max-w-6xl mx-auto flex justify-center gap-6 sm:gap-10 flex-wrap">
-            {[
-              "/jll.jpg",
-              "/zara.png",
-              "/itc.jpg",
-              "/max.avif",
-              "/sptl.jpeg",
-              "/holidayinn.jpg",
-              "/shell.png",
-              "/colonade.jpg",
-              "/boa.jpg",
-              "/samsung.png",
-            ].map((logo, i) => (
-              <div
-                key={i}
-                className="w-20 sm:w-24 md:w-28 hover:grayscale-0 transition"
-              >
-                <Image
-                  src={logo}
-                  alt={`Client Logo ${i + 1}`}
-                  width={100}
-                  height={100}
-                  className="object-contain w-full h-auto"
-                />
+            {/* Clients Grid */}
+            <div className="relative max-w-5xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-10 sm:gap-20">
+              {[
+                "/jll.jpg",
+                "/zara.png",
+                "/dlf.png",
+                "/itc.jpg",
+                "/max.avif",
+                "/sptl.jpeg",
+                "/holidayinn.jpg",
+                "/shell.png",
+                "/colonade.jpg",
+                "/boa.jpg",
+                "/deloitte.png",
+                "/samsung.png",
+              ].map((src, idx) => (
+                <div
+                  key={idx}
+                  className="relative w-28 sm:w-32 h-16 sm:h-20 mx-auto"
+                >
+                  <Image
+                    src={src}
+                    alt={`Client ${idx + 1}`}
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* ================= ABOUT SECTION ================= */}
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16 grid md:grid-cols-2 gap-10 items-center">
+          <div className="relative max-w-xs sm:max-w-sm md:max-w-full mx-auto">
+            <Image
+              src="/collab.png"
+              alt="Team Image"
+              width={500}
+              height={350}
+              className="rounded-xl shadow-md object-cover w-full h-auto"
+            />
+          </div>
+
+          <div>
+            <h3 className="text-blue-600 font-semibold uppercase tracking-widest text-xs sm:text-sm">
+              We Are Infinity
+            </h3>
+
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-2 leading-tight">
+              Your Engineering Partner
+              <br />
+              <span className="text-blue-600">For Success</span>
+            </h2>
+
+            <p className="mt-3 sm:mt-4 text-gray-600 text-sm sm:text-base">
+              Delivering world-class engineering, structural design, project
+              execution, and infrastructure development with unmatched
+              expertise.
+            </p>
+
+            <div className="grid grid-cols-3 mt-6 sm:mt-8 text-center">
+              <div>
+                <h3 className="text-2xl sm:text-3xl font-bold text-blue-600">
+                  15+
+                </h3>
+                <p className="text-xs sm:text-sm text-gray-500">
+                  Years Experience
+                </p>
               </div>
-            ))}
+              <div>
+                <h3 className="text-2xl sm:text-3xl font-bold text-blue-600">
+                  250+
+                </h3>
+                <p className="text-xs sm:text-sm text-gray-500">
+                  Projects Completed
+                </p>
+              </div>
+              <div>
+                <h3 className="text-2xl sm:text-3xl font-bold text-blue-600">
+                  120+
+                </h3>
+                <p className="text-xs sm:text-sm text-gray-500">
+                  Trusted Clients
+                </p>
+              </div>
+            </div>
           </div>
         </section>
       </div>
-
-      {/* ================= ABOUT SECTION ================= */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16 grid md:grid-cols-2 gap-10 items-center">
-        <div className="relative max-w-xs sm:max-w-sm md:max-w-full mx-auto">
-          <Image
-            src="/collab.png"
-            alt="Team Image"
-            width={500}
-            height={350}
-            className="rounded-xl shadow-md object-cover w-full h-auto"
-          />
-        </div>
-
-        <div>
-          <h3 className="text-blue-600 font-semibold uppercase tracking-widest text-xs sm:text-sm">
-            We Are Infinity
-          </h3>
-
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-2 leading-tight">
-            Your Engineering Partner
-            <br />
-            <span className="text-blue-600">For Success</span>
-          </h2>
-
-          <p className="mt-3 sm:mt-4 text-gray-600 text-sm sm:text-base">
-            Delivering world-class engineering, structural design, project
-            execution, and infrastructure development with unmatched expertise.
-          </p>
-
-          <div className="grid grid-cols-3 mt-6 sm:mt-8 text-center">
-            <div>
-              <h3 className="text-2xl sm:text-3xl font-bold text-blue-600">
-                15+
-              </h3>
-              <p className="text-xs sm:text-sm text-gray-500">
-                Years Experience
-              </p>
-            </div>
-            <div>
-              <h3 className="text-2xl sm:text-3xl font-bold text-blue-600">
-                250+
-              </h3>
-              <p className="text-xs sm:text-sm text-gray-500">
-                Projects Completed
-              </p>
-            </div>
-            <div>
-              <h3 className="text-2xl sm:text-3xl font-bold text-blue-600">
-                120+
-              </h3>
-              <p className="text-xs sm:text-sm text-gray-500">
-                Trusted Clients
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* ================= SERVICES ================= */}
       <section className="py-16 bg-gray-50">
