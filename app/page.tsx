@@ -162,6 +162,195 @@ export default function Home() {
       {/* ========================================================= */}
       {/* Rest of your sections stay the same — they are already responsive */}
       {/* ========================================================= */}
+      {/* ================= CLIENT LOGOS ================= */}
+      <div className="w-full bg-white min-h-screen mt-10   text-black font-sans flex flex-col items-center py-10 px-4">
+        <h1 className="text-3xl sm:text-4xl font-bold">
+          OUR <span className="text-red-600">CLIENTS</span>
+        </h1>
+        <div className="relative w-full bg-white text-black flex flex-col items-center py-12 px-4">
+          {/* Background Logo */}
+          <div className="relative w-full py-10">
+            {/* Background Logo */}
+            <div className="absolute inset-0 flex items-center justify-center opacity-50">
+              <Image
+                src="/logobg.png"
+                alt="Background Logo"
+                width={800}
+                height={800}
+                className="object-contain"
+              />
+            </div>
+
+            {/* Clients Grid */}
+            <div className="relative max-w-5xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-10 sm:gap-20">
+              {[
+                "/jll.jpg",
+                "/zara.png",
+                "/dlf.png",
+                "/itc.jpg",
+                "/max.avif",
+                "/sptl.jpeg",
+                "/holidayinn.jpg",
+                "/shell.png",
+                "/colonade.jpg",
+                "/boa.jpg",
+                "/deloitte.png",
+                "/samsung.png",
+              ].map((src, idx) => (
+                <div
+                  key={idx}
+                  className="relative w-28 sm:w-32 h-16 sm:h-20 mx-auto"
+                >
+                  <Image
+                    src={src}
+                    alt={`Client ${idx + 1}`}
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* ================= ABOUT SECTION ================= */}
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16 grid md:grid-cols-2 gap-10 items-center">
+          <div className="relative max-w-xs sm:max-w-sm md:max-w-full mx-auto">
+            <Image
+              src="/collab.png"
+              alt="Team Image"
+              width={500}
+              height={350}
+              className="rounded-xl shadow-md object-cover w-full h-auto"
+            />
+          </div>
+
+          <div>
+            <h3 className="text-blue-600 font-semibold uppercase tracking-widest text-xs sm:text-sm">
+              We Are Infinity
+            </h3>
+
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-2 leading-tight">
+              Your Engineering Partner
+              <br />
+              <span className="text-blue-600">For Success</span>
+            </h2>
+
+            <p className="mt-3 sm:mt-4 text-gray-600 text-sm sm:text-base">
+              Delivering world-class engineering, structural design, project
+              execution, and infrastructure development with unmatched
+              expertise.
+            </p>
+
+            <div className="grid grid-cols-3 mt-6 sm:mt-8 text-center">
+              <div>
+                <h3 className="text-2xl sm:text-3xl font-bold text-blue-600">
+                  15+
+                </h3>
+                <p className="text-xs sm:text-sm text-gray-500">
+                  Years Experience
+                </p>
+              </div>
+              <div>
+                <h3 className="text-2xl sm:text-3xl font-bold text-blue-600">
+                  250+
+                </h3>
+                <p className="text-xs sm:text-sm text-gray-500">
+                  Projects Completed
+                </p>
+              </div>
+              <div>
+                <h3 className="text-2xl sm:text-3xl font-bold text-blue-600">
+                  120+
+                </h3>
+                <p className="text-xs sm:text-sm text-gray-500">
+                  Trusted Clients
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      {/* ================= SERVICES ================= */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <h3 className="text-blue-600 font-semibold uppercase tracking-widest text-xs sm:text-sm text-center">
+            We Provide
+          </h3>
+
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mt-2">
+            Real Engineering Services For You
+          </h2>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 mt-10 sm:mt-12">
+            {[
+              { title: "Structural Design", icon: "🏗️" },
+              { title: "Project Planning", icon: "📊" },
+              { title: "Construction Execution", icon: "👷" },
+              { title: "Quality Inspection", icon: "🧪" },
+              { title: "MEP Services", icon: "⚙️" },
+              { title: "Consulting", icon: "📘" },
+            ].map((s, i) => (
+              <div
+                key={i}
+                className="p-6 bg-white rounded-xl shadow hover:shadow-lg transition text-center"
+              >
+                <div className="text-3xl sm:text-4xl">{s.icon}</div>
+                <h3 className="text-lg sm:text-xl font-semibold mt-2">
+                  {s.title}
+                </h3>
+                <p className="text-gray-500 text-xs sm:text-sm mt-1">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ================= HOW WE WORK ================= */}
+      <section className="py-16 bg-blue-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
+          <h3 className="text-blue-600 uppercase tracking-widest text-xs sm:text-sm">
+            How We Work
+          </h3>
+
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-2">
+            Check Out The Easy Way
+            <br />
+            To Get Our Services
+          </h2>
+
+          <p className="text-gray-600 mt-4 max-w-xl mx-auto text-sm sm:text-base">
+            We follow a simple, effective, and transparent 3-step workflow to
+            deliver the best engineering solutions.
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mt-10 sm:mt-12">
+            <div className="p-6 bg-white rounded-xl shadow text-center">
+              <h3 className="text-lg font-bold">Consultation</h3>
+              <p className="text-gray-500 mt-2 text-sm">
+                Share your project details with us.
+              </p>
+            </div>
+
+            <div className="p-6 bg-blue-600 text-white rounded-xl shadow text-center">
+              <h3 className="text-lg font-bold">Choose Your Plan</h3>
+              <p className="mt-2 text-sm">
+                Select the best engineering service package.
+              </p>
+            </div>
+
+            <div className="p-6 bg-white rounded-xl shadow text-center">
+              <h3 className="text-lg font-bold">Execution & Delivery</h3>
+              <p className="text-gray-500 mt-2 text-sm">
+                We deliver the project with quality & safety.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
