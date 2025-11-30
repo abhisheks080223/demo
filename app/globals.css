@@ -1,4 +1,10 @@
 @import "tailwindcss";
+@media (prefers-color-scheme: dark) {
+  html, body {
+    color-scheme: light;
+    background: white !important;
+  }
+}
 
 :root {
   --background: #ffffff;
