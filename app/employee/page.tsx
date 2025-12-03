@@ -16,7 +16,7 @@ export default function FounderAndTeam() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white flex justify-center py-6 px-3 sm:px-4 print:px-10">
+    <div className="min-h-screen bg-white flex justify-center py-6 px-6 sm:px-10 lg:px-20 print:px-10">
       <div className="max-w-5xl w-full bg-white shadow-lg rounded-lg overflow-hidden relative print:shadow-none">
         {/* LEFT STRIPE */}
         <div className="absolute left-0 top-0 h-full w-2 sm:w-2.5 bg-[#B30000]" />
