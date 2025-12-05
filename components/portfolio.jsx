@@ -1,31 +1,33 @@
 import Image from "next/image";
 
 export default function ProductPortfolio() {
+  const portfolioImages = [
+    "/port1.png",
+    "/port2.png",
+    "/port3.png",
+    "/port4.png",
+    "/port5.png",
+    "/port6.png",
+    "/port7.png",
+  ];
+
   return (
     <div className="w-full bg-white font-sans overflow-x-hidden">
-      {/* ========== HEADING ========== */}
+      {/* HEADING */}
       <div className="pt-[60px]">
         <div className="max-w-7xl mx-auto px-4">
           <h1 className="text-4xl md:text-5xl font-bold text-red-700">
             Our <br /> Product Portfolio
           </h1>
-          <div className="w-20 h-1 bg-red-700 mt-3"></div>
+          <div className="w-20 h-1 bg-red-700 mt-3" />
         </div>
       </div>
 
-      {/* ========== GRID COLLAGE ========== */}
-      <div className="max-w-2xl sm-h-12/12 mx-auto px-4 mt-12 pb-16">
-        {/* Mobile/Tablet (Compact Grid) */}
+      {/* PORTFOLIO WRAPPER */}
+      <div className="max-w-2xl mx-auto px-4 mt-12 pb-16">
+        {/* ===== MOBILE / TABLET DYNAMIC GRID ===== */}
         <div className="grid md:hidden grid-cols-2 sm:grid-cols-3 gap-4">
-          {[
-            "/port1.png",
-            "/port2.png",
-            "/port3.png",
-            "/port4.png",
-            "/port5.png",
-            "/port6.png",
-            "/port7.png",
-          ].map((img, i) => (
+          {portfolioImages.map((img, i) => (
             <div key={i}>
               <Image
                 src={img}
@@ -38,12 +40,12 @@ export default function ProductPortfolio() {
           ))}
         </div>
 
-        {/* Desktop Large Collage */}
+        {/* ===== DESKTOP COLLAGE ===== */}
         <div className="hidden md:grid grid-cols-4 gap-6">
-          {/* Wide Top Left */}
+          {/* Large Desktop Custom Layout */}
           <div className="col-span-2">
             <Image
-              src="/port1.png"
+              src={portfolioImages[0]}
               width={900}
               height={600}
               alt=""
@@ -51,10 +53,9 @@ export default function ProductPortfolio() {
             />
           </div>
 
-          {/* Wide Top Right */}
           <div className="col-span-2">
             <Image
-              src="/port2.png"
+              src={portfolioImages[1]}
               width={900}
               height={600}
               alt=""
@@ -62,10 +63,9 @@ export default function ProductPortfolio() {
             />
           </div>
 
-          {/* Tall Door Image */}
           <div className="col-span-2 row-span-2">
             <Image
-              src="/port3.png"
+              src={portfolioImages[2]}
               width={900}
               height={1200}
               alt=""
@@ -73,32 +73,25 @@ export default function ProductPortfolio() {
             />
           </div>
 
-          {/* Small right top */}
-          <div>
-            <Image
-              src="/port4.png"
-              width={500}
-              height={400}
-              alt=""
-              className="w-full h-full object-cover rounded-lg"
-            />
-          </div>
+          <Image
+            src={portfolioImages[3]}
+            width={500}
+            height={400}
+            alt=""
+            className="w-full h-full object-cover rounded-lg"
+          />
 
-          {/* Small right bottom */}
-          <div>
-            <Image
-              src="/port5.png"
-              width={500}
-              height={400}
-              alt=""
-              className="w-full h-full object-cover rounded-lg"
-            />
-          </div>
+          <Image
+            src={portfolioImages[4]}
+            width={500}
+            height={400}
+            alt=""
+            className="w-full h-full object-cover rounded-lg"
+          />
 
-          {/* Port 6 – larger width */}
           <div className="col-span-2 row-span-2">
             <Image
-              src="/port6.png"
+              src={portfolioImages[5]}
               width={700}
               height={1000}
               alt=""
@@ -106,10 +99,9 @@ export default function ProductPortfolio() {
             />
           </div>
 
-          {/* Port 7 wider */}
           <div className="col-span-2">
             <Image
-              src="/port7.png"
+              src={portfolioImages[6]}
               width={900}
               height={800}
               alt=""

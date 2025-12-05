@@ -1,317 +1,284 @@
-"use client";
+  "use client";
 
-import Image from "next/image";
-import { useState } from "react";
-import { useEffect } from "react";
-import AboutUs from "@/components/about-us";
-import Brands from "@/components/brands";
-import Portfolio from "@/components/portfolio";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-gsap.registerPlugin(ScrollTrigger);
+  import Image from "next/image";
+  import { useState, useEffect, useRef } from "react";
+  import AboutUs from "@/components/about-us";
+  import Brands from "@/components/brands";
+  import Portfolio from "@/components/portfolio";
+  import { motion } from "framer-motion";
+  import { gsap } from "gsap";
+  import "./globals.css";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import Header from "./components/header";
 
-export default function Home() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  gsap.registerPlugin(ScrollTrigger);
 
-  const toggleMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-      useEffect(() => {
-        const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+  export default function Home() {
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const text = "OUR SITC PROJECT SERVICES".split("");
+    const rootRef = useRef(null);
+    const imgWrapperRef = useRef(null);
+    const btnRef = useRef(null);
+    const cursorRef = useRef<HTMLDivElement | null>(null);
 
-        // HERO TEXT ANIMATION
-        tl.from(".hero-pretitle", { y: 20, opacity: 0, duration: 0.6 })
-          .from(".hero-title", { y: 40, opacity: 0, duration: 0.8 })
-          .from(".hero-desc", { y: 30, opacity: 0, duration: 0.6 }, "-=0.3")
-          .from(".hero-rating", { y: 20, opacity: 0, duration: 0.5 }, "-=0.2");
+    const toggleMenu = () => {
+      setMobileMenuOpen(!mobileMenuOpen);
+    };
 
-        // HERO IMAGE FADE + FLOAT
-        tl.from(".hero-main-img", { x: 80, opacity: 0, duration: 1 }, "-=0.5");
+    /* ================= GSAP EFFECTS ================= */
+    useEffect(() => {
+      const ctx = gsap.context(() => {
+        gsap.from(".hero-main-img", { x: 80, opacity: 0, duration: 1 });
+
         gsap.to(".hero-main-img", {
-          y: -12,
+          y: -10,
+          duration: 3,
+          ease: "sine.inOut",
           repeat: -1,
           yoyo: true,
-          duration: 2,
-          ease: "sine.inOut",
         });
 
-        // FLOATING CARDS STAGGER
         gsap.from(".hero-floating-card", {
           opacity: 0,
-          y: -30,
+          y: 30,
           duration: 0.8,
-          stagger: 0.2,
-          delay: 1.2,
+          stagger: 0.18,
           ease: "power3.out",
+          delay: 0.6,
         });
 
-        // SCROLLTRIGGER – animate hero on scroll
-        gsap.from(".hero-wrapper", {
-          scrollTrigger: {
-            trigger: ".hero-wrapper",
-            start: "top 80%",
-            toggleActions: "play none none reverse",
+        ScrollTrigger.create({
+          trigger: ".hero-wrapper",
+          start: "top top",
+          end: "bottom top",
+          scrub: 0.6,
+          onUpdate: (self) => {
+            const v = self.progress;
+            gsap.to(".hero-main-img", { y: -40 * v, overwrite: true });
+            gsap.to(".hero-bg-accent", {
+              y: 20 * v,
+              scale: 1 + 0.05 * v,
+              overwrite: true,
+            });
           },
-          opacity: 0,
-          y: 40,
-          duration: 1,
         });
-      }, []);
 
-  };
-  return (
-    <div className="w-full font-sans text-gray-900 bg-white">
-      {/* ================= FIXED HEADER ================= */}
-      <header className="w-full fixed top-0 left-0 z-50 flex justify-center py-4 px-4 bg-white/80 backdrop-blur-md shadow-sm">
-        <div className="w-full max-w-7xl bg-[#f4efff] rounded-full px-4 py-3 flex items-center justify-between shadow-sm">
-          {/* Logo */}
-          <div className="flex items-center gap-2">
-            <Image
-              src="/logo.jpeg"
-              alt="Logo"
-              width={36}
-              height={36}
-              className="object-contain"
-            />
-            <span className="font-semibold text-lg sm:text-xl">
-              Infinity Engineering
-            </span>
-          </div>
+        gsap.utils.toArray(".hero-floating-card").forEach((el, i) => {
+          gsap.to(el as HTMLElement, {
+            y: 6,
+            x: i % 2 === 0 ? -4 : 4,
+            duration: 2 + (i % 3) * 0.6,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut",
+            delay: 0.2 * i,
+          });
+        });
 
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-10 text-gray-700 font-medium">
-            <a href="#" className="hover:text-black">
-              Home
-            </a>
-            <a href="/employee" className="hover:text-black">
-              Employee
-            </a>
-            <a href="#" className="hover:text-black">
-              Services
-            </a>
-            <a href="/products" className="hover:text-red-600">
-              Products
-            </a>
-          </nav>
+        /* ========== CUSTOM CURSOR ========== */
+        const cursorEl = document.createElement("div");
+        cursorEl.className = "custom-cursor";
+        cursorEl.style.position = "fixed";
+        cursorEl.style.pointerEvents = "none";
+        cursorEl.style.width = "80px";
+        cursorEl.style.height = "80px";
+        cursorEl.style.borderRadius = "50%";
+        cursorEl.style.background =
+          "radial-gradient(circle, rgba(179,0,0,0.22), rgba(179,0,0,0.08) 40%, rgba(0,0,0,0))";
+        cursorEl.style.mixBlendMode = "screen";
+        cursorEl.style.opacity = "0.6";
+        cursorEl.style.transform = "translate(-50%, -50%)";
+        cursorEl.style.zIndex = "9999";
+        document.body.appendChild(cursorEl);
 
-          {/* Mobile Hamburger */}
-          <div className="md:hidden">
-            <button
-              onClick={toggleMenu}
-              className="focus:outline-none text-2xl"
-            >
-              {mobileMenuOpen ? "✖" : "☰"}
-            </button>
-          </div>
+        cursorRef.current = cursorEl;
 
-          {/* Mobile Menu */}
-          {mobileMenuOpen && (
-            <div className="md:hidden absolute top-full left-0 w-full bg-white shadow-lg z-40">
-              <nav className="flex flex-col gap-2 px-4 py-4 text-gray-700 font-medium">
-                <a href="#" onClick={toggleMenu} className="hover:text-red-600">
-                  Home
-                </a>
-                <a
-                  href="/employee"
-                  onClick={toggleMenu}
-                  className="hover:text-red-600"
-                >
-                  Employee
-                </a>
-                <a
-                  href="/portfolio"
-                  onClick={toggleMenu}
-                  className="hover:text-red-600"
-                >
-                  Portfolio
-                </a>
-                <a
-                  href="/products"
-                  onClick={toggleMenu}
-                  className="hover:text-red-600"
-                >
-                  Products
-                </a>
-                <button
-                  onClick={toggleMenu}
-                  className="bg-black text-white px-5 py-2 rounded-full mt-2"
-                >
-                  Contact Us
-                </button>
-              </nav>
-            </div>
-          )}
-        </div>
-      </header>
-      {/* Add padding so content doesn't hide behind fixed header */}
-      <div className="pt-[90px]">
-        <div className="max-w-7xl mx-auto px-4">
-          {/* ================= HERO SECTION ================= */}
-          <section className="hero-wrapper max-w-7xl mx-auto px-4 py-10 grid md:grid-cols-2 gap-10 items-center">
-            {/* LEFT TEXT */}
+        window.addEventListener("mousemove", (e) => {
+          cursorEl.style.left = `${e.clientX}px`;
+          cursorEl.style.top = `${e.clientY}px`;
+        });
+      }, rootRef);
+
+      return () => ctx.revert();
+    }, []);
+
+    /* ================= RENDER ================= */
+    return (
+      <>
+        <div className="w-full font-sans text-gray-900 pt-[100]  bg-white">
+          {/* HERO SECTION */}
+          <section
+            ref={rootRef}
+            className="hero-wrapper max-w-7xl mx-auto px-4 py-10 grid md:grid-cols-2 gap-10 items-center relative"
+          >
+            {/* TEXT LEFT */}
             <div>
-              <h4 className="hero-pretitle text-xs uppercase tracking-widest text-gray-500">
+              <h4 className="text-xs uppercase tracking-widest text-gray-500">
                 Welcome To{" "}
                 <span className="text-red-600">Infinity Engineerings</span>
               </h4>
 
-              <h1 className="hero-title text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mt-2">
+              <h1 className="text-4xl font-bold mt-2 leading-tight">
                 We Specialize in <br />
                 <span className="text-red-600">
                   Engineering & Infrastructure
                 </span>
               </h1>
 
-              <p className="hero-desc mt-4 text-gray-600 max-w-md text-sm sm:text-base">
-                Providing innovative engineering solutions focused on quality,
-                safety, and long-lasting infrastructure.
+              <p className="mt-4 text-gray-600 max-w-md">
+                Providing innovative engineering solutions with quality &
+                safety.
               </p>
 
-              <div className="hero-rating mt-6 flex items-center gap-4">
-                <div>
-                  <h3 className="text-xl font-bold">4.9/5</h3>
-                  <p className="text-gray-500 text-xs">Client Rating</p>
-                </div>
-
-                <button className="px-5 py-2 bg-red-600 text-white rounded-full shadow text-sm hover:bg-red-700">
-                  Get To Know Us
+              <div className="mt-6 flex items-center gap-4">
+                <button ref={btnRef}>
+                  <video
+                    src="/demo.mp4"
+                    autoPlay
+                    loop
+                    muted
+                    className="w-130 h-70  object-cover"
+                  />
                 </button>
               </div>
             </div>
 
-            {/* RIGHT IMAGE + CARDS */}
-            <div className="relative w-full flex justify-center md:pr-60">
-              <div className="absolute top-5 right-1/2 translate-x-1/2 md:right-0 md:translate-x-0 w-[260px] h-[340px] sm:w-[400px] sm:h-[430px] bg-gradient-to-b from-red-300/50 to-red-900 rounded-3xl"></div>
+            {/* RIGHT IMAGE FIXED */}
+            <div className="relative w-full flex justify-center md:justify-end">
+              {/* Smooth Background Gradient Box */}
+              <div
+                className="
+    hero-bg-accent absolute 
+    top-10 md:top-5 
+    right-4 md:right-0 
+    w-[260px] sm:w-[320px] md:w-[420px] 
+    h-[320px] sm:h-[380px] md:h-[420px] 
+    bg-gradient-to-b from-red-200/40 to-red-800/50 
+    rounded-3xl
+  "
+              ></div>
 
-              <Image
-                src="/girl.png"
-                alt="Hero Woman"
-                width={380}
-                height={460}
-                className="hero-main-img relative z-10 rounded-xl object-cover w-[260px] sm:w-[300px] md:w-[380px]"
-              />
+              {/* Main Girl Image */}
+              <div className="relative z-10 overflow-visible">
+                <Image
+                  src="/girl.png"
+                  alt="Hero Woman"
+                  width={380}
+                  height={460}
+                  className="
+      hero-main-img 
+      w-[180px] sm:w-[280px] md:w-[360px] 
+      relative z-20 drop-shadow-xl 
+      pt-40 sm:pt-10
+      -left-10 sm:-left-20 md:-left-36
+    "
+                />
+              </div>
 
-              {/* FLOATING CARDS */}
-              <div className="absolute right-0 md:-right-10 top-4 sm:top-10 z-20 space-y-4 pr-20 sm:space-y-6">
-                <div className="hero-floating-card bg-white w-40 sm:w-48 p-3 sm:p-4 rounded-2xl shadow-lg">
-                  <h2 className="text-lg sm:text-xl font-bold">4.9/5</h2>
-                  <p className="text-gray-500 text-xs sm:text-sm mt-1">
-                    Delivering precision, innovation & expertise.
+              {/* Floating Cards */}
+              <div
+                className="
+    absolute 
+    right-0 top-5 
+    flex flex-col gap-4 
+    scale-90 sm:scale-95 md:scale-100 
+    z-30
+  "
+              >
+                {/* Rating card */}
+                <div className="hero-floating-card bg-white p-4 rounded-2xl shadow-lg w-48">
+                  <h2 className="text-xl font-bold">4.9/5</h2>
+                  <p className="text-gray-500 text-sm">
+                    Delivering precision & expertise.
                   </p>
-                  <div className="text-yellow-500 mt-1 sm:mt-2 text-sm sm:text-base">
-                    ★★★★★
-                  </div>
                 </div>
 
-                <div className="hero-floating-card bg-white flex items-center gap-2 sm:gap-3 p-2 px-3 rounded-full shadow-md w-max">
-                  <div className="flex -space-x-2 sm:-space-x-3">
-                    <Image
-                      src="/avg.avif"
-                      width={32}
-                      height={32}
-                      className="rounded-full border-2 border-white"
-                      alt=""
-                    />
-                    <Image
-                      src="/avg2.webp"
-                      width={32}
-                      height={32}
-                      className="rounded-full border-2 border-white"
-                      alt=""
-                    />
-                    <Image
-                      src="/avg3.webp"
-                      width={32}
-                      height={32}
-                      className="rounded-full border-2 border-white"
-                      alt=""
-                    />
-                  </div>
-                  <div className="w-7 h-7 rounded-full bg-purple-500 text-white flex items-center justify-center text-sm">
+                {/* Profile Images */}
+                <div className="hero-floating-card bg-white flex items-center gap-3 p-3 rounded-full shadow-md w-max">
+                  <Image
+                    src="/avg.avif"
+                    width={32}
+                    height={32}
+                    className="rounded-full"
+                    alt=""
+                  />
+                  <Image
+                    src="/avg2.webp"
+                    width={32}
+                    height={32}
+                    className="rounded-full"
+                    alt=""
+                  />
+                  <Image
+                    src="/avg3.webp"
+                    width={32}
+                    height={32}
+                    className="rounded-full"
+                    alt=""
+                  />
+                  <div className="w-7 h-7 rounded-full bg-purple-500 text-white flex items-center justify-center">
                     +
                   </div>
                 </div>
 
-                <div className="hero-floating-card ml-1">
-                  <h3 className="text-lg sm:text-xl font-semibold leading-tight">
-                    Get To Know <br /> Our Business
+                {/* Business Info */}
+                <div className="hero-floating-card bg-white p-4 rounded-xl shadow-lg">
+                  <h3 className="text-lg font-semibold leading-tight">
+                    Get To Know
+                    <br />
+                    Our Business
                   </h3>
-                  <p className="text-gray-500 text-xs sm:text-sm mt-1">
-                    Let's Get Started →
-                  </p>
-                </div>
-              </div>
-            </div>
-          </section>
-          {/* ===== ABOUT GRID ===== */}
-          <section className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16 grid md:grid-cols-2 gap-10 items-center">
-            <Image
-              src="/collab.png"
-              alt="Team Image"
-              width={500}
-              height={350}
-              className="rounded-xl shadow-md object-cover w-full h-auto"
-            />
-
-            <div>
-              <h3 className="text-red-600 font-semibold uppercase tracking-widest text-xs sm:text-sm">
-                We Are Infinity
-              </h3>
-
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-2 leading-tight">
-                Your Engineering Partner
-                <br />
-                <span className="text-red-600">For Success</span>
-              </h2>
-
-              <p className="mt-3 sm:mt-4 text-gray-600 text-sm sm:text-base">
-                Delivering world-class engineering, structural design, project
-                execution, and infrastructure development with unmatched
-                expertise.
-              </p>
-
-              <div className="grid grid-cols-3 mt-6 sm:mt-8 text-center">
-                <div>
-                  <h3 className="text-2xl sm:text-3xl font-bold text-red-600">
-                    15+
-                  </h3>
-                  <p className="text-xs sm:text-sm text-gray-500">
-                    Years Experience
-                  </p>
-                </div>
-                <div>
-                  <h3 className="text-2xl sm:text-3xl font-bold text-red-600">
-                    250+
-                  </h3>
-                  <p className="text-xs sm:text-sm text-gray-500">
-                    Projects Completed
-                  </p>
-                </div>
-                <div>
-                  <h3 className="text-2xl sm:text-3xl font-bold text-red-600">
-                    120+
-                  </h3>
-                  <p className="text-xs sm:text-sm text-gray-500">
-                    Trusted Clients
-                  </p>
+                  <p className="text-gray-500 text-sm">Let’s Get Started →</p>
                 </div>
               </div>
             </div>
           </section>
 
-          {/* ABOUT SECTION COMPONENT */}
+          {/* MINI CSS */}
+          <style>{`
+          .magnetic-btn { will-change: transform; }
+        `}</style>
+          <div className="h-20 md:h-32"></div>
+
+          {/* OTHER SECTIONS */}
           <AboutUs />
           <Portfolio />
           <Brands />
 
           {/* Header */}
           <section className="text-center py-10 mt-20 px-4">
-            <h1 className="text-3xl sm:text-4xl font-bold">
-              OUR <span className="text-red-600">SITC PROJECT</span> SERVICES
-            </h1>
+            <motion.h1
+              className="text-3xl sm:text-4xl font-bold flex justify-center flex-wrap"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={{
+                visible: { transition: { staggerChildren: 0.05 } },
+              }}
+            >
+              {text.map((char, i) => (
+                <motion.span
+                  key={i}
+                  variants={{
+                    hidden: { opacity: 0, y: 20 },
+                    visible: {
+                      opacity: 1,
+                      y: 0,
+                      transition: { duration: 0.5, ease: "easeOut" },
+                    },
+                  }}
+                  className={
+                    ["S", "I", "T", "C"].includes(char) ? "text-red-600" : ""
+                  }
+                >
+                  {char === " " ? "\u00A0" : char}
+                </motion.span>
+              ))}
+            </motion.h1>
           </section>
 
           {/* Services Grid */}
-          <section className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-10 sm:gap-12 px-4">
+          <section className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-10 sm:gap-12 px-4 mb-30">
             {/* 01 Supply */}
             <div className="bg-[#0d1b2a] text-white p-6 rounded-xl relative">
               <div className="absolute -top-3 left-3 bg-red-600 text-white px-3 py-1 rounded-md font-bold">
@@ -358,7 +325,7 @@ export default function Home() {
             </div>
 
             {/* 04 Commissioning */}
-            <div className="bg-[#0d1b2a]  text-white p-6 rounded-xl relative">
+            <div className="bg-[#0d1b2a]  text-white p-6 rounded-xl  relative">
               <div className="absolute -top-3 left-3 bg-[#0d1b2a] text-white px-3 py-1 rounded-md font-bold">
                 04
               </div>
@@ -375,16 +342,46 @@ export default function Home() {
 
           {/* Collaboration Section */}
           <section className="mt-10 bg-red-600 w-[1200px] max-w-full mx-auto flex flex-col items-center justify-center text-white p-6 sm:p-10 rounded-lg">
-            <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-              <div className="w-full h-60 sm:h-72 md:h-80 relative rounded-xl overflow-hidden">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.3 }}
+              variants={{
+                visible: { transition: { staggerChildren: 0.25 } },
+              }}
+              className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 items-center"
+            >
+              {/* LEFT IMAGE */}
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, x: -40 },
+                  visible: {
+                    opacity: 1,
+                    x: 0,
+                    transition: { duration: 0.8, ease: "easeOut" },
+                  },
+                }}
+                className="w-full h-60 sm:h-72 md:h-80 relative rounded-xl overflow-hidden"
+              >
                 <Image
                   src="/collab.png"
                   alt="Team meeting"
                   fill
                   className="object-cover"
                 />
-              </div>
-              <div>
+              </motion.div>
+
+              {/* RIGHT TEXT */}
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, x: 40 },
+                  visible: {
+                    opacity: 1,
+                    x: 0,
+                    transition: { duration: 0.8, ease: "easeOut" },
+                  },
+                }}
+              >
                 <h2 className="text-2xl sm:text-3xl font-semibold mb-3">
                   Collaboration
                 </h2>
@@ -395,11 +392,12 @@ export default function Home() {
                   dealer delivers, sets up, and hands over the keys ready to
                   drive.
                 </p>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </section>
+
           {/* ================= CLIENT LOGOS ================= */}
-          <div className="w-full bg-white min-h-screen mt-10 text-black font-sans flex flex-col items-center py-10 mt-20 px-4">
+          <div className="w-full bg-white min-h-screen  text-black font-sans flex flex-col items-center py-10 mt-20 px-4">
             <h1 className="text-3xl sm:text-4xl font-bold">
               OUR <span className="text-red-600">CLIENTS</span>
             </h1>
@@ -450,110 +448,177 @@ export default function Home() {
 
           {/* Thank You Section */}
           <div className="w-full bg-white text-black font-sans">
-            <div className="flex justify-center items-center px-6 md:px-20 ">
-              <Image
-                src="/india.png"
-                alt="India Map"
-                width={700}
-                height={100}
-                className="w-[800] h-auto"
-              />
+            <div className="max-w-7xl mx-auto px-4 sm:px-6">
+              {/* ================= THANK YOU SECTION ================= */}
+              <motion.div
+                className="w-full bg-white text-black font-sans mt-10"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.3 }}
+                variants={{
+                  hidden: { opacity: 0, y: 30 },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    transition: { duration: 0.8, staggerChildren: 0.2 },
+                  },
+                }}
+              >
+                <div className="max-w-7xl mx-auto px-4 sm:px-6">
+                  {/* MAP */}
+                  <div className="flex justify-center items-center mb-6">
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.8 }}
+                    >
+                      <Image
+                        src="/india.png"
+                        alt="India Map"
+                        width={700}
+                        height={100}
+                        className="w-[800px] h-auto"
+                      />
+                    </motion.div>
+                  </div>
+
+                  {/* HEADING */}
+                  <motion.h1
+                    className="text-3xl sm:text-4xl font-bold text-red-600 mb-4 text-center"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
+                  >
+                    THANK YOU
+                  </motion.h1>
+
+                  {/* PARAGRAPH */}
+                  <motion.p
+                    className="text-sm sm:text-base text-gray-700 leading-relaxed mb-10 max-w-3xl mx-auto text-center"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.2 }}
+                  >
+                    We appreciate your interest and look forward to the
+                    opportunity to work together to achieve exceptional results.
+                    If you have any questions or would like to discuss next
+                    steps, please reach out through the contact information
+                    below.
+                  </motion.p>
+
+                  {/* OFFICES */}
+                  <motion.div
+                    className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-10 mb-10"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.4 }}
+                  >
+                    <div>
+                      <h3 className="font-bold text-red-600 mb-2">
+                        Head Office
+                      </h3>
+                      <p className="text-sm sm:text-base">
+                        <b>INFINITY ENGINEERINGS</b>
+                        <br />
+                        3rd Floor, JMD Regent Arcade Mall,
+                        <br />
+                        A – Block, DLF Phase – 1,
+                        <br />
+                        Sector – 28, Gurugram,
+                        <br />
+                        Haryana – 122002
+                      </p>
+                    </div>
+
+                    <div>
+                      <h3 className="font-bold text-red-600 mb-2">
+                        Corporate Office
+                      </h3>
+                      <p className="text-sm sm:text-base">
+                        <b>INFINITY ENGINEERINGS</b>
+                        <br />
+                        Building No. 72A, G & JU,
+                        <br />
+                        Maharaja Agrasen Marg,
+                        <br />
+                        Pitampura, New Delhi – 110034
+                      </p>
+                    </div>
+
+                    <div>
+                      <h3 className="font-bold text-red-600 mb-2">
+                        Our Branches
+                      </h3>
+                      <ul className="list-disc ml-5 text-sm sm:text-base">
+                        <li>Mumbai</li>
+                        <li>Bengaluru</li>
+                        <li>Hyderabad</li>
+                        <li>Chennai</li>
+                      </ul>
+                    </div>
+                  </motion.div>
+
+                  {/* CONTACT */}
+                  <motion.div
+                    className="mb-10"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.6 }}
+                  >
+                    <h2 className="text-xl sm:text-2xl font-bold text-red-600 mb-4">
+                      GET IN TOUCH:
+                    </h2>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-10">
+                      <div>
+                        <p className="font-bold text-sm sm:text-base">
+                          📞 Phone Number
+                        </p>
+                        <p className="text-sm sm:text-base">+91-9718170004</p>
+                      </div>
+
+                      <div>
+                        <p className="font-bold text-sm sm:text-base">
+                          🌐 Website
+                        </p>
+                        <p className="text-sm sm:text-base">
+                          www.infinityengineerings.com
+                        </p>
+                      </div>
+
+                      <div>
+                        <p className="font-bold text-sm sm:text-base">
+                          📧 Email
+                        </p>
+                        <p className="text-sm sm:text-base">
+                          sales@infinityengineerings.com
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  {/* ADDRESS */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.8 }}
+                  >
+                    <p className="font-bold text-sm sm:text-base">📍 Address</p>
+                    <p className="text-sm sm:text-base pb-10">
+                      3rd FLOOR, JMD Regent Arcade Mall A-Block, DLF Phase-1,
+                      Sector-28 Gurugram, Haryana 122002
+                    </p>
+                  </motion.div>
+                </div>
+              </motion.div>
             </div>
-
-            <section className="px-4 sm:px-8 py-10 max-w-5xl mx-auto">
-              <h1 className="text-3xl sm:text-4xl font-bold text-red-600 mb-4">
-                THANK YOU
-              </h1>
-              <p className="text-sm sm:text-base text-gray-700 leading-relaxed mb-10">
-                We appreciate your interest and look forward to the opportunity
-                to work together to achieve exceptional results. If you have any
-                questions or would like to discuss next steps, please reach out
-                through the contact information below.
-              </p>
-
-              {/* Offices */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-10 mb-10">
-                <div>
-                  <h3 className="font-bold text-red-600 mb-2">Head Office</h3>
-                  <p className="text-sm sm:text-base">
-                    <b>INFINITY ENGINEERINGS</b>
-                    <br />
-                    3rd Floor, JMD Regent Arcade Mall,
-                    <br />
-                    A – Block, DLF Phase – 1,
-                    <br />
-                    Sector – 28, Gurugram,
-                    <br />
-                    Haryana – 122002
-                  </p>
-                </div>
-                <div>
-                  <h3 className="font-bold text-red-600 mb-2">
-                    Corporate Office
-                  </h3>
-                  <p className="text-sm sm:text-base">
-                    <b>INFINITY ENGINEERINGS</b>
-                    <br />
-                    Building No. 72A, G & JU,
-                    <br />
-                    Maharaja Agrasen Marg,
-                    <br />
-                    Centre of Health, Pitampura,
-                    <br />
-                    North West Delhi,
-                    <br />
-                    New Delhi – 110034
-                  </p>
-                </div>
-                <div>
-                  <h3 className="font-bold text-red-600 mb-2">Our Branches</h3>
-                  <ul className="list-disc ml-5 text-sm sm:text-base">
-                    <li>Mumbai</li>
-                    <li>Bengaluru</li>
-                    <li>Hyderabad</li>
-                    <li>Chennai</li>
-                  </ul>
-                </div>
-              </div>
-
-              {/* Contact */}
-              <h2 className="text-xl sm:text-2xl font-bold text-red-600 mb-4">
-                GET IN TOUCH:
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-10 mb-10">
-                <div>
-                  <p className="font-bold text-sm sm:text-base">
-                    📞 Phone Number
-                  </p>
-                  <p className="text-sm sm:text-base">+91-9718170004</p>
-                </div>
-                <div>
-                  <p className="font-bold text-sm sm:text-base">🌐 Website</p>
-                  <p className="text-sm sm:text-base">
-                    www.infinityengineerings.com
-                  </p>
-                </div>
-                <div>
-                  <p className="font-bold text-sm sm:text-base">📧 Email</p>
-                  <p className="text-sm sm:text-base">
-                    sales@infinityengineerings.com
-                  </p>
-                </div>
-              </div>
-
-              {/* Address */}
-              <div>
-                <p className="font-bold text-sm sm:text-base">📍 Address</p>
-                <p className="text-sm sm:text-base">
-                  3rd FLOOR, Jmd Regent Arcade Mall A- Block, Dlf Phase-1,
-                  Sector-28 Gurugram, Haryana 122002
-                </p>
-              </div>
-            </section>
           </div>
-        </div>{" "}
-        {/* END padding wrapper */}
-      </div>
-    </div>
-  );
-}
+        </div>
+      </>
+    );
+  }
+
+
+
+
+
